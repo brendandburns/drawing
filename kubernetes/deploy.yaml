@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reco-deployment
+  labels:
+    app: reco
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: reco
+  template:
+    metadata:
+      labels:
+        app: reco
+    spec:
+      containers:
+      - name: reco
+        image: brendanburns/reco:v1
+        command:
+        - sh
+        - -c
+        - "/server -d /dist -t `cat /token/token`"
+        resources:
+          requests:
+            cpu: 1.0
+          limits:
+            cpu: 1.0
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: token
+          mountPath: "/token"
+          readOnly: true
+      volumes:
+      - name: token
+        secret:
+          secretName: token

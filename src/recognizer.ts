@@ -39,10 +39,22 @@ function errorFunction(xhttp: XMLHttpRequest) {
     console.log("Error: %s, Detail: %s", xhttp.status, xhttp.responseText);
 }
 
-export function recognize(requestObj: any, fn: (obj: RecognitionResponse) => void) {
+export function getToken(): Promise<string> {
+    const result = new Promise<string>((resolve, reject) => {
+        const r = new XMLHttpRequest();
+        r.addEventListener("load", (resp) => {
+            resolve(r.responseText);
+        });
+        r.open("GET", "http://localhost:8080/token");
+        r.send();
+    });
+    return result;
+}
+
+export async function recognize(token: string, requestObj: any, fn: (obj: RecognitionResponse) => void): Promise<void> {
     var SERVER_ADDRESS = "https://api.cognitive.microsoft.com";
     var ENDPOINT_URL = SERVER_ADDRESS + "/inkrecognizer/v1.0-preview/recognize";
-    var SUBSCRIPTION_KEY = (document.getElementById("subkey") as any).value;
+    var SUBSCRIPTION_KEY = token;
 
     if (SUBSCRIPTION_KEY === "") {
         window.alert("Please change the subscriptionKey variable by a valid key!");

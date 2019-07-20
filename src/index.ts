@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { process } from './processor';
-import { recognize } from './recognizer';
+import { getToken, recognize } from './recognizer';
 
 declare function require(name:string): any;
 var atrament = require('atrament');
@@ -13,8 +13,13 @@ var requestObj = {
   "strokes": [] as any[]
 };
 
-var submit = function() {
+var submit = async function() {
+  const token = await getToken();
   var strokes = sketcher.strokes as any[];
+  if (!strokes) {
+    console.log("no strokes!");
+    return;
+  }
   var start = 212;
   requestObj.strokes = strokes.map((value, ix): any => {
     return {
@@ -22,7 +27,7 @@ var submit = function() {
         points: value.join(",")
       }
   });
-  recognize(requestObj, process);
+  recognize(token, requestObj, process);
 }
 var windowAny = window as any;
 windowAny.submit = submit;

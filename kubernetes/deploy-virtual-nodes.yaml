@@ -36,3 +36,8 @@ spec:
       - name: token
         secret:
           secretName: token
+      tolerations:
+      - key: virtual-kubelet.io/provider
+        operator: Exists
+      - key: azure.com/aci
+        effect: NoSchedule

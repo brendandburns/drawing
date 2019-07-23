@@ -41,8 +41,6 @@ function findName(layer: RecognitionResult[]): string | null {
 }
 
 export function process(obj: RecognitionResponse) {
-    console.log(obj);
-
     var layers = calculateLayers(obj.recognitionUnits);
     var output = document.getElementById('output');
     output.innerHTML = 'There are ' + layers.length + ' layers ' +

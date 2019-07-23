@@ -18,6 +18,8 @@ var submit = async function() {
   var strokes = sketcher.strokes as any[];
   if (!strokes) {
     console.log("no strokes!");
+    document.getElementById('output').innerHTML = "this\na\nlong\nlong\ntest";
+    document.getElementById('response').innerHTML = "this\na\nlong\nlong\ntest";
     return;
   }
   var start = 212;
@@ -36,5 +38,7 @@ var handleClear = function() {
   sketcher.clear();
   sketcher.strokes = [];
   sketcher.path = [];
+  document.getElementById('output').innerHTML = '';
+  document.getElementById('response').innerHTML = '';
 };
 windowAny.handleClear = handleClear;
